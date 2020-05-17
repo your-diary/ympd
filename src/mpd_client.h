@@ -19,6 +19,8 @@
 #ifndef __MPD_CLIENT_H__
 #define __MPD_CLIENT_H__
 
+#define __YNN_YMPD_DEBUG
+
 #include "mongoose.h"
 
 #define RETURN_ERROR_AND_RECOVER(X) do { \
@@ -68,7 +70,9 @@
     X(MPD_API_TOGGLE_CONSUME) \
     X(MPD_API_TOGGLE_SINGLE) \
     X(MPD_API_TOGGLE_CROSSFADE) \
-    X(MPD_API_TOGGLE_REPEAT)
+    X(MPD_API_TOGGLE_REPEAT) \
+    X(MPD_API_SEEK_PREV) \
+    X(MPD_API_SEEK_NEXT)
 
 enum mpd_cmd_ids {
     MPD_CMDS(GEN_ENUM)

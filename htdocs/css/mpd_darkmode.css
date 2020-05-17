@@ -1,0 +1,67 @@
+body {
+    --bg-color: #3C3C3C;
+    --bg-color-2: #444444;
+    --font-color: #DDDDDD;
+    background-color: var(--bg-color);
+}
+
+/* music list */
+.panel.panel-primary {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+}
+
+/* active music in the list */
+#salamisandwich tbody tr.active td,
+#salamisandwich tbody tr:hover td
+{
+    background-color: #666666;
+    color: var(--font-color);
+}
+
+/* the path bar in the file browser */
+#breadcrump {
+    background-color: var(--bg-color-2);
+}
+
+/* buttons in both the header and the footer */
+.btn-default {
+    background-image: linear-gradient(to bottom, var(--bg-color-2) 0%, var(--bg-color-2) 100%);
+    color: var(--font-color);
+    text-shadow: none;
+}
+.btn:active,
+.btn.active {
+    background-color: inherit;
+}
+.btn-default:hover,
+.btn:hover {
+    background-color: var(--bg-color-2);
+    color: #428bca;
+}
+
+/* progress bar */
+.progress {
+    background-image: none;
+    background-color: #777777;
+}
+
+/* search bar */
+input.form-control:nth-child(1) {
+    background-color: inherit;
+}
+
+/* seek { */
+
+#seek_length_button,
+#seek_button
+{
+    background-color: var(--bg-color-2);
+}
+
+#seek_length_button div {
+    color: var(--font-color);
+}
+
+/* } seek */
+

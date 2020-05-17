@@ -99,3 +99,29 @@ button {
   text-align:left;
   width:2.8em;
 }
+
+/* seek { */
+
+#seek_length_button {
+    margin-left: 0.5em;
+}
+
+#seek_length_button div {
+  font-family: monospace;
+  width: 1em;
+}
+
+#seek_button {
+    width: 10em;
+    height: 3em;
+    font-family: monospace;
+    margin-top: 0.5em;
+}
+
+#seek_button div {
+    font-size: 2em;
+    line-height: 1em;
+}
+
+/* } seek */
+

@@ -15,6 +15,7 @@
 
   <!-- Custom styles for this template -->
   <link href="css/mpd.css" rel="stylesheet">
+  <link href="css/mpd_darkmode.css" rel="stylesheet">
   <link href="assets/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
   <script src="js/modernizr-custom.js"></script>
 </head>
@@ -84,7 +85,17 @@
         
         <div class="panel panel-primary">
           <!-- Default panel contents -->
-          <div class="panel-heading"><b id="panel-heading">Queue</b></div>
+          <div class="panel-heading">
+            <b id="panel-heading">Queue</b>
+            <div class="btn-group">
+              <button id="seek_length_button" class="btn btn-default" onclick="change_seek_length('wrap_increase');">
+                  <div></div>
+              </button>
+            </div>
+            <br>
+            <button id="seek_button" class="btn btn-default" onclick="seek_position('left');"><div>←</div></button>
+            <button id="seek_button" class="btn btn-default" onclick="seek_position('right');"><div>→</div></button>
+          </div>
           <div class="panel-body">
             <h1>
               <span id="track-icon" onclick="clickPlay();" class="glyphicon glyphicon-play"></span>

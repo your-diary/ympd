@@ -33,6 +33,57 @@ var filter = undefined;
 var dirble_api_token = "";
 var dirble_stations = false;
 
+//seek {
+
+const seek_length_array = [3, 5, 10, 15];
+var seek_length_index = 0;
+var seek_length;
+
+function change_seek_length(mode) {
+    if (mode == "increase") {
+        if (seek_length_index != seek_length_array.length - 1) {
+            ++seek_length_index;
+        }
+    } else if (mode == "decrease") {
+        if (seek_length_index != 0) {
+            --seek_length_index;
+        }
+    } else if (mode == "wrap_increase") {
+        ++seek_length_index;
+        if (seek_length_index == seek_length_array.length) {
+            seek_length_index = 0;
+        }
+    }
+    seek_length = seek_length_array[seek_length_index];
+    document.querySelector('#seek_length_button div').innerText = String(seek_length).padStart(2);
+}
+
+change_seek_length("increase"); //initializes `seek_length`
+
+function seek_position(direction) {
+    if (direction == "left") {
+        socket.send('MPD_API_SEEK_PREV' + seek_length);
+    } else if (direction == "right") {
+        socket.send('MPD_API_SEEK_NEXT' + seek_length);
+    }
+}
+
+//} seek
+
+//dark mode {
+
+function toggle_dark_mode() {
+    const link_elements = document.querySelectorAll('link');
+    for (let i = 0; i < link_elements.length; ++i) {
+        if (link_elements[i].getAttribute('href') == 'css/mpd_darkmode.css') {
+            link_elements[i].toggleAttribute('disabled');
+            break;
+        }
+    }
+}
+
+//} dark mode
+
 var app = $.sammy(function() {
 
     function runBrowse() {
@@ -537,6 +588,8 @@ function webSocketConnect() {
                     $('#currenttrack').text(" " + obj.data.title);
                     var notification = "<strong><h4>" + obj.data.title + "</h4></strong>";
 
+                    let page_title = obj.data.title;
+
                     if(obj.data.album) {
                         $('#album').text(obj.data.album);
                         notification += obj.data.album + "<br />";
@@ -544,7 +597,10 @@ function webSocketConnect() {
                     if(obj.data.artist) {
                         $('#artist').text(obj.data.artist);
                         notification += obj.data.artist + "<br />";
+                        page_title += ` - ${obj.data.artist}`;
                     }
+
+                    document.title = page_title;
 
                     if ($.cookie("notification") === "true")
                         songNotify(obj.data.title, obj.data.artist, obj.data.album );
@@ -887,15 +943,30 @@ $(document).keydown(function(e){
     if (e.target.tagName == 'INPUT') {
         return;
     }
-    switch (e.which) {
-        case 37: //left
+    switch (e.key) {
+        case "ArrowLeft":
+            seek_position("left");
+            break;
+        case "ArrowRight":
+            seek_position("right");
+            break;
+        case "ArrowUp":
+            change_seek_length("increase");
+            break;
+        case "ArrowDown":
+            change_seek_length("decrease");
+            break;
+        case "h":
             socket.send('MPD_API_SET_PREV');
             break;
-        case 39: //right
+        case "l":
             socket.send('MPD_API_SET_NEXT');
             break;
-        case 32: //space
+        case " ":
             clickPlay();
+            break;
+        case "D":
+            toggle_dark_mode();
             break;
         default:
             return;

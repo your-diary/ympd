@@ -82,6 +82,24 @@ int callback_mpd(struct mg_connection *c)
         case MPD_API_SET_NEXT:
             mpd_run_next(mpd.conn);
             break;
+        case MPD_API_SEEK_PREV:
+            {
+                const int seek_length = atoi(c->content + strlen(mpd_cmd_strs[cmd_id]));
+                mpd_run_seek_current(mpd.conn, -seek_length, /* relative = */ true);
+#ifdef __YNN_YMPD_DEBUG
+                printf("Seeked %d seconds.\n", -seek_length);
+#endif
+                break;
+            }
+        case MPD_API_SEEK_NEXT:
+            {
+                const int seek_length = atoi(c->content + strlen(mpd_cmd_strs[cmd_id]));
+                mpd_run_seek_current(mpd.conn, seek_length, /* relative = */ true);
+#ifdef __YNN_YMPD_DEBUG
+                printf("Seeked %d seconds.\n", seek_length);
+#endif
+                break;
+            }
         case MPD_API_SET_PLAY:
             mpd_run_play(mpd.conn);
             break;
