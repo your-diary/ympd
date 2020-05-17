@@ -12,7 +12,7 @@ http://www.ympd.org
 Differences from The Original
 -----------------------------
 
-This project is a fork of the original `ympd`. We use `customized` branch as the main branch and keep `master` branch untouched. See [README_customized.md](./README_customized.md) for the details.
+This project is a fork of the original `ympd`. We use `customized` branch as the main branch and keep `master` branch untouched. See the customized [README.md](https://github.com/your-diary/ympd/blob/customized/README.md) for the details.
 
 The contents above and below this section are all unchanged from the original.
 
