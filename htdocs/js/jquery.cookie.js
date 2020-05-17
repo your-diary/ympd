@@ -40,7 +40,20 @@
 			// If we can't decode the cookie, ignore it, it's unusable.
 			// If we can't parse the cookie, ignore it, it's unusable.
 			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
+            if (config.json) {
+                let ret;
+                try {
+                    ret = JSON.parse(s);
+                } catch (e) {
+                    console.log("--- Invalid JSON (in jquery.cookie.js)---");
+                    console.log(s);
+                    console.log("-----------------------------------------");
+                    return s;
+                }
+                return ret;
+            } else {
+                return s;
+            }
 		} catch(e) {}
 	}
 

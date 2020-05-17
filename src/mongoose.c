@@ -321,6 +321,9 @@ int ns_resolve(const char *domain_name, char *ip_addr_buf, size_t buf_len);
 #define NS_UDP_RECEIVE_BUFFER_SIZE  2000
 #define NS_VPRINTF_BUFFER_SIZE      500
 
+// #define __MEM_SIZE 4192
+#define __MEM_SIZE (1024 * 1024 * 5) //same as `MAX_SIZE` in `mpd_client.h`
+
 struct ctl_msg {
   ns_callback_t callback;
   char message[NS_CTL_MSG_MESSAGE_SIZE];
@@ -3030,7 +3033,7 @@ static size_t deliver_websocket_frame(struct connection *conn) {
 
 size_t mg_websocket_write(struct mg_connection *conn, int opcode,
                           const char *data, size_t data_len) {
-    unsigned char mem[4192], *copy = mem;
+    unsigned char mem[__MEM_SIZE], *copy = mem;
     size_t copy_len = 0;
 
     /* Check overflow */
@@ -3086,7 +3089,7 @@ size_t mg_websocket_write(struct mg_connection *conn, int opcode,
 
 size_t mg_websocket_printf(struct mg_connection *conn, int opcode,
                            const char *fmt, ...) {
-  char mem[4192], *buf = mem;
+  char mem[__MEM_SIZE], *buf = mem;
   va_list ap;
   int len;
 

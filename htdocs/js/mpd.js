@@ -269,7 +269,19 @@ function webSocketConnect() {
             if(msg.data === last_state || msg.data.length == 0)
                 return;
 
-            var obj = JSON.parse(msg.data);
+            //TODO:
+            //Sometimes `JSON.parse()` fails for some reason especially when we access `ympd` from multiple browsers at the same time.
+            //We cannot identify the reason yet.
+            //Since reloding does the trick, we use it for the time being.
+            var obj;
+            try {
+                obj = JSON.parse(msg.data);
+            } catch (e) {
+                console.log("--- Invalid JSON (in mpd.js)---");
+                console.log(msg.data);
+                console.log("-------------------------------");
+                location.reload();
+            }
 
             switch (obj.type) {
                 case 'queue':
