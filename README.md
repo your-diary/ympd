@@ -2,6 +2,10 @@
 
 This project is a fork of the original [`ympd`](https://www.ympd.org/). It seems the original has been abandoned; the last commit dates back to 2018 and numerous pull requests are ignored.
 
+| ![comparison](readme_assets/demo.gif) |
+|:-:|
+| Fig: Comparison between the original `ympd` (left) and this `ympd++` (right).
+
 ## Development
 
 ### Branches
