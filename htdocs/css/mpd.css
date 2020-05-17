@@ -124,3 +124,13 @@ button {
 
 /* } seek */
 
+/* cover art { */
+
+#cover_art img {
+    display: block;
+    width: 300px;
+    max-width: 50%;
+}
+
+/* } cover art */
+

@@ -256,6 +256,9 @@ function webSocketConnect() {
             }).show();
 
             app.run();
+
+            socket.send('__YMPD_SESSION_START');
+
             /* emit initial request for output names */
             socket.send('MPD_API_GET_OUTPUTS');
             /* emit initial request for dirble api token */
@@ -545,13 +548,13 @@ function webSocketConnect() {
                 case 'outputnames':
                     $('#btn-outputs-block button').remove();
                     if (obj.data.length > 1) {
-		        $.each(obj.data, function(id, name){
+		                $.each(obj.data, function(id, name){
                             var btn = $('<button id="btnoutput'+id+'" class="btn btn-default" onclick="toggleoutput(this, '+id+')"><span class="glyphicon glyphicon-volume-up"></span> '+name+'</button>');
                             btn.appendTo($('#btn-outputs-block'));
                         });
-		    } else {
+                    } else {
                         $('#btn-outputs-block').addClass('hide');
-		    }
+                    }
                     /* remove cache, since the buttons have been recreated */
                     last_outputs = '';
                     break;
@@ -602,6 +605,26 @@ function webSocketConnect() {
 
                     document.title = page_title;
 
+                    //cover art {
+
+                    if (obj.data.cover_art == "same") {
+
+                        console.log("Same cover art.");
+
+                    } else if (obj.data.cover_art) {
+
+                        document.querySelector('#cover_art').innerHTML = '<img src="data:image/jpeg;base64,' + obj.data.cover_art + '">';
+                        console.log("Updated the cover art.");
+
+                    } else {
+
+                        document.querySelector('#cover_art').innerHTML = "";
+                        console.log("No cover art.");
+
+                    }
+
+                    //} cover art
+
                     if ($.cookie("notification") === "true")
                         songNotify(obj.data.title, obj.data.artist, obj.data.album );
                     else
@@ -620,15 +643,15 @@ function webSocketConnect() {
                 case 'dirbleapitoken':
                     dirble_api_token = obj.data;
                     
-		    if (dirble_api_token) {
-		        $('#dirble').removeClass('hide');
+                    if (dirble_api_token) {
+                        $('#dirble').removeClass('hide');
 
-                        if (dirble_stations) { dirble_load_stations();   }
-                        else {                 dirble_load_categories(); }
+                                if (dirble_stations) { dirble_load_stations();   }
+                                else {                 dirble_load_categories(); }
 
                     } else {
                         $('#dirble').addClass('hide');
-		    }
+                    }
                     break;
                 case 'error':
                     $('.top-right').notify({

@@ -28,6 +28,14 @@
 #include "config.h"
 #include "json_encode.h"
 
+#include "base64.h"
+#include "misc.h"
+
+//This flag becomes `true` when a new connection is established, that is, when you newly open `ympd` in a browser.
+//This flag is used to say "This session is just established now. If the control is now in a function, please treat this case specially."
+//As soon as this flag is used, it shall be set to `false` again.
+bool __has_session_just_started_now = false;
+
 /* forward declaration */
 static int mpd_notify_callback(struct mg_connection *c, enum mg_event ev);
 
@@ -70,6 +78,12 @@ int callback_mpd(struct mg_connection *c)
 
     switch(cmd_id)
     {
+        case __YMPD_SESSION_START:
+#ifdef __YNN_YMPD_DEBUG
+            printf("\nA new connection is established.\n");
+#endif
+            __has_session_just_started_now = true;
+            break;
         case MPD_API_UPDATE_DB:
             mpd_run_update(mpd.conn, NULL);
             break;
@@ -589,6 +603,11 @@ int mpd_put_outputs(char *buffer, int names)
 
 int mpd_put_current_song(char *buffer)
 {
+
+#ifdef __YNN_YMPD_DEBUG
+    printf("---------------\n");
+#endif
+
     char *cur = buffer;
     const char *end = buffer + MAX_SIZE;
     struct mpd_song *song;
@@ -606,7 +625,92 @@ int mpd_put_current_song(char *buffer)
     cur += json_emit_raw_str(cur, end - cur, ",\"album\":");
     cur += json_emit_quoted_str(cur, end - cur, mpd_get_album(song));
 
+    //cover art {
+
+    static const char *cover_art_directory_old = NULL;
+
+    cur += json_emit_raw_str(cur, end - cur, ",\"cover_art\":");
+
+    FILE *fp;
+    const char *song_uri = mpd_song_get_uri(song);
+#ifdef __YNN_YMPD_DEBUG
+    printf("Song URI: %s\n", song_uri);
+#endif
+    const char *cover_art_directory = __dirname(song_uri);
+
+    if (!__has_session_just_started_now && cover_art_directory_old != NULL && strcmp(cover_art_directory_old, cover_art_directory) == 0) { //when the cover art is same as the previous one (This avoids re-calculation.)
+        cur += json_emit_raw_str(cur, end - cur, "\"same\"");
+#ifdef __YNN_YMPD_DEBUG
+        printf("Skipped cover art encoding.\n");
+#endif
+        free((void *)cover_art_directory);
+    } else {
+
+        if (__has_session_just_started_now) {
+            __has_session_just_started_now = false;
+        }
+
+        if (cover_art_directory_old != NULL) {
+            free((void *)cover_art_directory_old);
+        }
+
+        char *cover_art_path = (char *)malloc(strlen(__MPD_MUSIC_DIRECTORY) + strlen(cover_art_directory) + strlen(__COVER_ART_NAME) - 1);
+        strcpy(cover_art_path, __MPD_MUSIC_DIRECTORY);
+        strcpy(cover_art_path + strlen(__MPD_MUSIC_DIRECTORY), cover_art_directory);
+        strcpy(cover_art_path + strlen(__MPD_MUSIC_DIRECTORY) + strlen(cover_art_directory), __COVER_ART_NAME);
+#ifdef __YNN_YMPD_DEBUG
+        // printf("Cover Art Dir: %s\n", cover_art_directory);
+        // printf("Cover Art Name: %s\n", __COVER_ART_NAME);
+        printf("Cover Art URI: %s\n", cover_art_path);
+#endif
+
+        char *cover_art_raw = (char *)malloc(MAX_SIZE);
+        for (int i = 0; i < MAX_SIZE; ++i) {
+            cover_art_raw[i] = 0;
+        }
+        int cover_art_raw_index = 0;
+
+        fp = fopen(cover_art_path, "rb");
+        if (fp == NULL) {
+            ;
+        } else {
+            char byte[1];
+            while (fread(byte, sizeof(char), 1, fp)) {
+                cover_art_raw[cover_art_raw_index] = byte[0];
+                ++cover_art_raw_index;
+            }
+            fclose(fp); //Note `fclose()` causes segmentation fault when its arugment is `NULL`.
+        }
+        free(cover_art_path);
+
+        if (cover_art_raw_index == 0) {
+#ifdef __YNN_YMPD_DEBUG
+            printf("No cover art.\n");
+#endif
+            cur += json_emit_raw_str(cur, end - cur, "\"\"");
+        } else {
+            size_t output_length;
+            const char *cover_art_encoded = base64_encode((const unsigned char *)cover_art_raw, cover_art_raw_index, &output_length);
+            cur += json_emit_quoted_str(cur, end - cur, cover_art_encoded);
+#ifdef __YNN_YMPD_DEBUG
+            printf("Succeeded in reading the cover art.\n");
+            // printf("%s\n", cover_art_encoded);
+#endif
+            free((void *)cover_art_encoded);
+        }
+
+        free(cover_art_raw);
+
+        cover_art_directory_old = cover_art_directory;
+
+    }
+
+    //} cover art
+
     cur += json_emit_raw_str(cur, end - cur, "}}");
+#ifdef __YNN_YMPD_DEBUG
+    // printf("%s\n", cur - strlen(buffer));
+#endif
     mpd_song_free(song);
     mpd_response_finish(mpd.conn);
 

@@ -20,6 +20,8 @@
 #define __MPD_CLIENT_H__
 
 #define __YNN_YMPD_DEBUG
+#define __COVER_ART_NAME "cover_ympd.jpg"
+#define __MPD_MUSIC_DIRECTORY "/media/MUSIC/" //WARNING: should end with a slash
 
 #include "mongoose.h"
 
@@ -33,7 +35,7 @@
 } while(0)
 
 
-#define MAX_SIZE 1024 * 100
+#define MAX_SIZE (1024 * 1024 * 5) //5MB (relatively large because we should deal with cover arts)
 #define MAX_ELEMENTS_PER_PAGE 512
 
 #define GEN_ENUM(X) X,
@@ -72,7 +74,8 @@
     X(MPD_API_TOGGLE_CROSSFADE) \
     X(MPD_API_TOGGLE_REPEAT) \
     X(MPD_API_SEEK_PREV) \
-    X(MPD_API_SEEK_NEXT)
+    X(MPD_API_SEEK_NEXT) \
+    X(__YMPD_SESSION_START)
 
 enum mpd_cmd_ids {
     MPD_CMDS(GEN_ENUM)
