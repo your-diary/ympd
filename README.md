@@ -1,65 +1,76 @@
-[![Build Status](https://travis-ci.org/notandy/ympd.svg)](https://travis-ci.org/notandy/ympd)
-ympd
-====
+# ympd++
 
-Standalone MPD Web GUI written in C, utilizing Websockets and Bootstrap/JS
+This project is a fork of the original `ympd`. It seems the original has been abandoned; the last commit dates back to 2018 and numerous pull requests are ignored.
 
+## Branches
 
-http://www.ympd.org
+We use `customized` branch as the main branch and keep `master` branch untouched.
 
-![ScreenShot](http://www.ympd.org/assets/ympd_github.png)
+## Build
 
-Differences from The Original
------------------------------
+### Without Installation
 
-This project is a fork of the original `ympd`. We use `customized` branch as the main branch and keep `master` branch untouched. See [README_customized.md](./README_customized.md) for the details.
+This builds the project and starts `ympd` in the foreground.
 
-The contents above and below this section are all unchanged from the original.
-
-Dependencies
-------------
- - libmpdclient 2: http://www.musicpd.org/libs/libmpdclient/
- - cmake 2.6: http://cmake.org/
- - OpenSSL: https://www.openssl.org/
-
-Unix Build Instructions
------------------------
-
-1. install dependencies. cmake, libmpdclient (dev), and OpenSSL (dev) are available from all major distributions.
-2. create build directory ```cd /path/to/src; mkdir build; cd build```
-3. create makefile ```cmake ..  -DCMAKE_INSTALL_PREFIX:PATH=/usr```
-4. build ```make```
-5. install ```sudo make install``` or just run with ```./ympd```
-
-Run flags
----------
-```
-Usage: ./ympd [OPTION]...
-
- -h, --host <host>             connect to mpd at host [localhost]
- -p, --port <port>             connect to mpd at port [6600]
- -w, --webport [ip:]<port>     listen interface/port for webserver [8080]
- -d, --dirbletoken <apitoken>  Dirble API token
- -u, --user <username>         drop priviliges to user after socket bind
- -V, --version                 get version
- --help                        this help
+```bash
+$ ./build.sh
 ```
 
-SSL Support
------------
-To run ympd with SSL support:
+### With Installation
 
-- create a certificate (key and cert in the same file), example:
-```
-# openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 1000 -nodes
-# cat key.pem cert.pem > ssl.pem
-```
-- tell ympd to use a webport using SSL and where to find the certificate: 
-```
-# ./ympd -w "ssl://8081:/path/to/ssl.pem"
+This builds the project and installs `ympd`.
+
+```bash
+$ ./build.sh --install
 ```
 
-Copyright
----------
+## Requirements
 
-2013-2014 <andy@ndyk.de>
+See [README_original.md](./README_original.md).
+
+## New Features
+
+### 1. Backward-Incompatible Changes
+
+- <kbd>←</kbd> and <kbd>→</kbd> were used to go to the previous/next song, but now the keyboard bindings are changed to <kbd>h</kbd> and <kbd>l</kbd> respectively.
+
+### 2. Seek
+
+You can seek the current song for `seek_length` seconds
+
+- with <kbd>←</kbd> and <kbd>→</kbd> keys
+
+- or by clicking `←` / `→` buttons (see the figure below).
+
+The default value of `seek_length` is `5` and it can be increased/decreased
+
+- with <kbd>↑</kbd> and <kbd>↓</kbd> keys
+
+- or by clicking the button in which the value of `seek_length` is displayed (see the figure below).
+
+| ![seek buttons](readme_assets/ss_seek.png) |
+|:-:|
+| Fig: Buttons for seeking. The numbered buttons are newly added. |
+
+### 3. Dark Mode
+
+Dark mode is implemented and is enabled by default. You can toggle it by pressing <kbd>D</kbd> (i.e. <kbd>Shift</kbd> + <kbd>d</kbd>).
+
+| ![non dark mode](readme_assets/ss_non_dark_mode.png) | ![dark mode](readme_assets/ss_dark_mode.png) |
+|:-:|:-:|
+| Fig. Non dark mode. | Fig. Dark mode. |
+
+### 4. Page Title
+
+Now the page title is dynamically updated to the information of the current song. This is related to [Issue 128](https://github.com/notandy/ympd/issues/128).
+
+| ![informative page title](readme_assets/ss_page_title.png) |
+|:-:|
+| Fig: Page title with song information. |
+
+
+
+
+
+<!-- vim: set spell: -->
+
