@@ -124,7 +124,7 @@ $ cd helper_scripts && ./create_cover_art.sh <directory>
 
 `ympd` server communicates with a browser using WebSockets. To update information such as a song's title, the artist's name, etc., they are sent as a JSON string. We extend this implementation to incorporate a base64-encoded image file into the string.
 
-| ![cover art 1](readme_assets/ss_cover_art_1.png) | ![dark mode](readme_assets/ss_cover_art_2.png) |
+| ![cover art 1](readme_assets/ss_cover_art_1.png) | ![dark mode](readme_assets/ss_cover_art_3.png) |
 |:-:|:-:|
 | Fig. Cover art display. | Fig. Another example of cover art display. |
 
