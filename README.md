@@ -36,6 +36,22 @@ $ ./build.sh --install
 
 See [README_original.md](./README_original.md).
 
+## Tested Environments
+
+### Build Environments
+
+- Raspbian Buster on Raspberry Pi 3
+
+### Server Environments
+
+- Raspbian Buster on Raspberry Pi 3
+
+### Client Environments
+
+- Firefox on Arch Linux
+
+- Firefox on Android
+
 ## New Features
 
 ### 1. Backward-Incompatible Changes
