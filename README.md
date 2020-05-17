@@ -9,6 +9,13 @@ http://www.ympd.org
 
 ![ScreenShot](http://www.ympd.org/assets/ympd_github.png)
 
+Differences from The Original
+-----------------------------
+
+This project is a fork of the original `ympd`. We use `customized` branch as the main branch and keep `master` branch untouched. See [README_customized.md](./README_customized.md) for the details.
+
+The contents above and below this section are all unchanged from the original.
+
 Dependencies
 ------------
  - libmpdclient 2: http://www.musicpd.org/libs/libmpdclient/
