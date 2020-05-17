@@ -1,6 +1,6 @@
 # ympd++
 
-This project is a fork of the original `ympd`. It seems the original has been abandoned; the last commit dates back to 2018 and numerous pull requests are ignored.
+This project is a fork of the original [`ympd`](https://www.ympd.org/). It seems the original has been abandoned; the last commit dates back to 2018 and numerous pull requests are ignored.
 
 ## Branches
 
@@ -67,10 +67,6 @@ Now the page title is dynamically updated to the information of the current song
 | ![informative page title](readme_assets/ss_page_title.png) |
 |:-:|
 | Fig: Page title with song information. |
-
-
-
-
 
 <!-- vim: set spell: -->
 
