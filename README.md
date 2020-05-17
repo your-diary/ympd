@@ -2,9 +2,17 @@
 
 This project is a fork of the original [`ympd`](https://www.ympd.org/). It seems the original has been abandoned; the last commit dates back to 2018 and numerous pull requests are ignored.
 
-## Branches
+## Development
+
+### Branches
 
 We use `customized` branch as the main branch and keep `master` branch untouched.
+
+### References
+
+- [`libmpdclient` documentation](https://www.musicpd.org/doc/libmpdclient/index.html)
+
+- [Git repository of the original `ympd`](https://github.com/notandy/ympd)
 
 ## Build
 
