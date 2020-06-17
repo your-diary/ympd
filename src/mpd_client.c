@@ -28,6 +28,7 @@
 #include "config.h"
 #include "json_encode.h"
 
+#include <assert.h>
 #include "base64.h"
 #include "misc.h"
 
@@ -685,7 +686,7 @@ int mpd_put_current_song(char *buffer)
 
         if (cover_art_raw_index == 0) {
 #ifdef __YNN_YMPD_DEBUG
-            printf("No cover art.\n");
+            printf("No cover art found.\n");
 #endif
             cur += json_emit_raw_str(cur, end - cur, "\"\"");
         } else {
@@ -694,9 +695,9 @@ int mpd_put_current_song(char *buffer)
             cur += json_emit_quoted_str(cur, end - cur, cover_art_encoded);
 #ifdef __YNN_YMPD_DEBUG
             printf("Succeeded in reading the cover art.\n");
-            // printf("%s\n", cover_art_encoded);
+            // printf("-----\n%s\n-----\n", cover_art_encoded);
 #endif
-            free((void *)cover_art_encoded);
+            free((char *)cover_art_encoded); //If `(void *)` is used (and "YU-NO(gamename) soundtrack" is played), the error "free(): invalid pointer" occurred for some reason.
         }
 
         free(cover_art_raw);
