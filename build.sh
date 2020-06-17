@@ -10,7 +10,7 @@ fi
 mkdir -p build
 cd build
 cmake ..  -DCMAKE_INSTALL_PREFIX:PATH=/usr
-make
+make C_FLAGS='-g '
 
 if [[ $1 == "--install" ]]; then
     sudo make install
