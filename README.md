@@ -116,6 +116,8 @@ If `cover_ympd.jpg` file exists under the same directory in which the current so
 
 ### 5.2. Requirements
 
+- The feature is disabled by default since it isn't very stable now. To enable it, change the value of `SHOULD_ENABLE_COVER_ART` macro to `1` in `src/mpd_client.c`.
+
 - The `mpd`'s `music_directory`, which is normally set in `/etc/mpd.conf`, shall be `/media/MUSIC/`. If you'd like to use another directory, change the value of the macro `__MPD_MUSIC_DIRECTORY` in `src/mpd_client.h` and rebuild. This limitation comes from the fact that [`mpd_song_get_uri()`](https://www.musicpd.org/doc/libmpdclient/song_8h.html#a8bf8a5fe7792142bb4e8b9f8c8aa41c6) returns a path relative to `music_directory`.
 
 - As described above, the name of cover arts shall be `cover_ympd.jpg`. And it is recommended they are small in size (e.g. `<= 1MB`) for a speedy operation. We supply `helper_scripts/create_cover_art.sh` script to recursively create `cover_ympd.jpg` files from `cover.jpg` and `cover.png` in the specified directory. Note it needs `imagemagick`. Usage:

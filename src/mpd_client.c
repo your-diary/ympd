@@ -31,6 +31,7 @@
 #include <assert.h>
 #include "base64.h"
 #include "misc.h"
+#define SHOULD_ENABLE_COVER_ART 0
 
 //This flag becomes `true` when a new connection is established, that is, when you newly open `ympd` in a browser.
 //This flag is used to say "This session is just established now. If the control is now in a function, please treat this case specially."
@@ -626,7 +627,7 @@ int mpd_put_current_song(char *buffer)
     cur += json_emit_raw_str(cur, end - cur, ",\"album\":");
     cur += json_emit_quoted_str(cur, end - cur, mpd_get_album(song));
 
-    //cover art {
+#if (SHOULD_ENABLE_COVER_ART == 1) //cover art {
 
     static const char *cover_art_directory_old = NULL;
 
@@ -706,7 +707,7 @@ int mpd_put_current_song(char *buffer)
 
     }
 
-    //} cover art
+#endif //} cover art
 
     cur += json_emit_raw_str(cur, end - cur, "}}");
 #ifdef __YNN_YMPD_DEBUG
