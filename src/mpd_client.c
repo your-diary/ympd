@@ -633,7 +633,6 @@ int mpd_put_current_song(char *buffer)
 
     cur += json_emit_raw_str(cur, end - cur, ",\"cover_art\":");
 
-    FILE *fp;
     const char *song_uri = mpd_song_get_uri(song);
 #ifdef __YNN_YMPD_DEBUG
     printf("Song URI: %s\n", song_uri);
@@ -672,7 +671,7 @@ int mpd_put_current_song(char *buffer)
         }
         int cover_art_raw_index = 0;
 
-        fp = fopen(cover_art_path, "rb");
+        FILE *fp = fopen(cover_art_path, "rb");
         if (fp == NULL) {
             ;
         } else {
